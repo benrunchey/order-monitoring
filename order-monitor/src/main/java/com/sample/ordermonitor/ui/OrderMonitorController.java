@@ -65,11 +65,16 @@ public class OrderMonitorController {
         return commandGateway.send(new StartOrderFulfillmentCommand(rxNumber, orderFulfillmentId, Instant.now()));
     }
 
+    @GetMapping("/")
+    public CompletableFuture<List<OrderMonitorSummary>> getById() {
+        return queryGateway.query("Order-Monitor-Summary-Get-All", null, ResponseTypes.multipleInstancesOf(OrderMonitorSummary.class));
+    }
+
+
     @GetMapping("/{rxNumber}")
     public CompletableFuture<OrderMonitorSummary> getById(@PathVariable("rxNumber") String rxNumber) {
         return queryGateway.query(new FindOrderMonitorSummaryById(rxNumber), ResponseTypes.instanceOf(OrderMonitorSummary.class));
     }
-
 
     @GetMapping(value = "watch/{rxNumber}")
     public Flux<ServerSentEvent<List<OrderMonitorHistory>>> watchOrderMonitor(@PathVariable("rxNumber") String rxNumber) {
@@ -82,9 +87,5 @@ public class OrderMonitorController {
                 .map( history ->
                         ServerSentEvent.<List<OrderMonitorHistory>>builder(history).event("message").build());
     }
-
-
-
-
 
 }

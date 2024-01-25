@@ -15,6 +15,8 @@ public class OrderMonitorSummary{
     private String orderFulfillmentId;
     private String orderShipmentId;
 
+    private Instant intakeApprovedDate;
+
     public OrderMonitorSummary() {
     }
 
@@ -53,6 +55,8 @@ public class OrderMonitorSummary{
         return orderShipmentId;
     }
 
+    public Instant getIntakeApprovedDate() { return intakeApprovedDate; }
+
     public void startIntake(String orderIntakeId) {
         this.orderIntakeId = orderIntakeId;
         this.setStatus(OrderMonitorStatus.INTAKE_STARTED);
@@ -64,6 +68,12 @@ public class OrderMonitorSummary{
     public void approveIntake() {
         this.setStatus(OrderMonitorStatus.INTAKE_APPROVED);
     }
+
+    public void approveIntake(Instant intakeApprovedDate) {
+        this.setStatus(OrderMonitorStatus.INTAKE_APPROVED);
+        this.intakeApprovedDate = intakeApprovedDate;
+    }
+
 
     public void rejectIntake() {
         this.setStatus(OrderMonitorStatus.INTAKE_REJECTED);

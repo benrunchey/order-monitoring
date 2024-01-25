@@ -4,6 +4,7 @@ import com.sample.ordermonitor.coreapi.events.*;
 import com.sample.ordermonitor.coreapi.models.OrderMonitorHistory;
 import com.sample.ordermonitor.coreapi.models.OrderMonitorStatus;
 import com.sample.ordermonitor.coreapi.query.FindOrderMonitorHistoryByRxNumber;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.Timestamp;
 import org.axonframework.messaging.annotation.MessageIdentifier;
@@ -15,6 +16,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Component
+@ProcessingGroup("OrderMonitorHistory")
 public class OrderMonitorHistoryProjection {
 
     private final OrderMonitorHistoryRepository orderMonitorHistoryRepository;

@@ -5,11 +5,15 @@ import com.sample.ordermonitor.coreapi.models.OrderMonitorStatus;
 import com.sample.ordermonitor.coreapi.models.OrderMonitorSummary;
 import com.sample.ordermonitor.coreapi.query.FindOrderMonitorSummaryById;
 import com.sample.ordermonitor.coreapi.query.FindOrderMonitorSummaryByMemberNbrAndDateOfService;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
+@ProcessingGroup("OrderMonitorSummary")
 public class OrderMonitorSummaryProjection {
 
     private final OrderMonitorSummaryRepository orderMonitorSummaryRepository;
@@ -45,7 +49,8 @@ public class OrderMonitorSummaryProjection {
     @EventHandler
     public void on(OrderIntakeApprovedEvent event) {
         var summary = this.orderMonitorSummaryRepository.findById(event.rxNumber()).orElseThrow();
-        summary.approveIntake();
+        //summary.approveIntake();
+        summary.approveIntake(event.approvedDate());
         this.orderMonitorSummaryRepository.save(summary);
 
     }
@@ -88,5 +93,10 @@ public class OrderMonitorSummaryProjection {
     @QueryHandler
     public OrderMonitorSummary handle(FindOrderMonitorSummaryByMemberNbrAndDateOfService query) {
         return this.orderMonitorSummaryRepository.findByInsuranceMemberNbrAndDateOfService(query.insuranceMemberNbr(), query.dateOfService()).orElseThrow();
+    }
+
+    @QueryHandler(queryName = "Order-Monitor-Summary-Get-All")
+    public List<OrderMonitorSummary> findAll() {
+        return this.orderMonitorSummaryRepository.findAll();
     }
 }

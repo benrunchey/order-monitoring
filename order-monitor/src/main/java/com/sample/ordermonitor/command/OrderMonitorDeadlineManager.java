@@ -10,7 +10,7 @@ public class OrderMonitorDeadlineManager {
 
     private DeadlineManager deadlineManager;
 
-    private static final int DEADLINE_TIMEOUT_SECONDS = 30;
+    private static final int DEADLINE_TIMEOUT_SECONDS = 10;
 
     public static final String INTAKE_STARTED = "intakeStarted";
     public static final String ORDER_INTAKE_STARTED_DEADLINE_ID = "orderIntakeStartedDeadlineId";
